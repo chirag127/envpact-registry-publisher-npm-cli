@@ -1,7 +1,13 @@
 # envpact-registry-publisher
 
+[![Live docs](https://img.shields.io/badge/docs-live-blue)](https://envpact-registry-publisher-npm-cli.oriz.in)
+[![Stars](https://img.shields.io/github/stars/chirag127/envpact-registry-publisher-npm-cli?style=social)](https://github.com/chirag127/envpact-registry-publisher-npm-cli/stargazers)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](./LICENSE)
+
 Programmatic submission of MCP servers to every public MCP registry —
 on every npm publish, automatically.
+
+**Live docs:** https://envpact-registry-publisher-npm-cli.oriz.in
 
 Replaces the manual `MCP_REGISTRY_SUBMISSION.md` checklist with a
 single CLI + GitHub Action that runs at the tail of `envpact-mcp`'s
