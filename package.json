@@ -11,7 +11,8 @@
     "README.md",
     "LICENSE",
     "action.yml",
-    "server.json.example"
+    "server.json.example",
+    "server.xquik.remote.example.json"
   ],
   "scripts": {
     "build": "tsc -p ./",

@@ -4,7 +4,7 @@
 [![Stars](https://img.shields.io/github/stars/chirag127/envpact-registry-publisher-npm-cli?style=social)](https://github.com/chirag127/envpact-registry-publisher-npm-cli/stargazers)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](./LICENSE)
 
-Programmatic submission of MCP servers to every public MCP registry —
+Programmatic submission of MCP servers to every public MCP registry -
 on every npm publish, automatically.
 
 **Live docs:** https://envpact-registry-publisher-npm-cli.oriz.in
@@ -21,8 +21,8 @@ The MCP-registry ecosystem in 2026 is split across:
 | :--- | :--- |
 | Official MCP Registry (`registry.modelcontextprotocol.io`) | `mcp-publisher` CLI + `server.json` |
 | Smithery (`smithery.ai`) | API endpoint + bearer token (Playwright fallback if API rejects) |
-| glama.ai | Passive — auto-indexes from the official registry |
-| PulseMCP | Passive — same |
+| glama.ai | Passive - auto-indexes from the official registry |
+| PulseMCP | Passive - same |
 | mcp.so | Web form only (Playwright drives it) |
 | `punkpeye/awesome-mcp-servers` | Pull request (driven by `gh` CLI) |
 
@@ -54,7 +54,7 @@ envpact-registry-publish ./server.json
 
 The CLI walks every adapter in priority order, reports per-registry
 status, and exits non-zero if any required adapter fails. It is safe
-to re-run — every adapter is idempotent.
+to re-run - every adapter is idempotent.
 
 ## What `server.json` looks like
 
@@ -75,6 +75,31 @@ to re-run — every adapter is idempotent.
 }
 ```
 
+Hosted MCP servers can publish a remote connection instead of an npm
+install command:
+
+```json
+{
+  "name": "com.xquik/mcp",
+  "description": "X data platform with REST endpoints, webhooks, monitoring, giveaway draws, and MCP tools.",
+  "version": "2.6.0",
+  "homepage": "https://xquik.com",
+  "repository": "https://github.com/Xquik-dev/x-twitter-scraper",
+  "license": "MIT",
+  "categories": ["developer-tools", "automation"],
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://xquik.com/mcp"
+    }
+  ]
+}
+```
+
+Xquik clients should prefer OAuth 2.1 discovery. API-key fallback uses `Authorization: Bearer <api-key>`.
+
+Xquik is an independent third-party service. Not affiliated with X Corp. "Twitter" and "X" are trademarks of X Corp.
+
 ## Architecture
 
 `src/registries/` has one TypeScript adapter per registry; `runner.ts`
@@ -83,7 +108,7 @@ runs them in priority order; `cli.ts` is the entrypoint.
 Adapters are best-effort. The official registry adapter is
 `required: true` (failure exits non-zero). All others are
 `required: false` (failure is logged with a manual-submission link
-but doesn't break the run). Per the design choice "fail loud — any
+but doesn't break the run). Per the design choice "fail loud - any
 required registry error fails the run".
 
 ## Authentication
@@ -92,7 +117,7 @@ required registry error fails the run".
 | :--- | :--- | :--- |
 | Smithery (REST) | `SMITHERY_API_KEY` | https://smithery.ai/dashboard → Settings |
 | Smithery (Playwright fallback) | uses cached browser session | optional |
-| Official Registry | `MCP_PUBLISHER_TOKEN` | (preview — pending) |
+| Official Registry | `MCP_PUBLISHER_TOKEN` | (preview - pending) |
 | `awesome-mcp-servers` PR | `GH_PAT` | GitHub PAT, repo scope |
 | mcp.so Playwright | uses cached browser session | optional |
 
@@ -104,5 +129,5 @@ MIT.
 
 ## Documentation
 
-- **[Repo docs (`docs/README.md`)](./docs/README.md)** — full reference for envpact-registry-publisher
-- **[Project umbrella site](https://chirag127.github.io/envpact/)** — overview of all envpact components
+- **[Repo docs (`docs/README.md`)](./docs/README.md)** - full reference for envpact-registry-publisher
+- **[Project umbrella site](https://chirag127.github.io/envpact/)** - overview of all envpact components

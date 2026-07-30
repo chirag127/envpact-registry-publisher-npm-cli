@@ -55,6 +55,12 @@ Validation lives in `src/types.ts` (`validateServerSpec`); call
 `envpact-registry-publish` with a malformed spec and it tells you
 which field is wrong.
 
+Hosted MCP servers can omit `npm_package` and `install` when they
+provide at least one remote connection. See
+`server.xquik.remote.example.json` for a streamable HTTP example with
+OAuth 2.1 discovery. API-key fallback uses an `Authorization` bearer
+header.
+
 ## GitHub Action
 
 ```yaml
