@@ -1,0 +1,15 @@
+{
+  "name": "com.xquik/mcp",
+  "description": "X data platform with REST endpoints, webhooks, monitoring, giveaway draws, and MCP tools.",
+  "version": "2.6.0",
+  "homepage": "https://xquik.com",
+  "repository": "https://github.com/Xquik-dev/x-twitter-scraper",
+  "license": "MIT",
+  "categories": ["developer-tools", "automation"],
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://xquik.com/mcp"
+    }
+  ]
+}
