@@ -1,17 +1,37 @@
 # envpact-registry-publisher
 
-[![Live docs](https://img.shields.io/badge/docs-live-blue)](https://envpact-registry-publisher-npm-cli.oriz.in)
-[![Stars](https://img.shields.io/github/stars/chirag127/envpact-registry-publisher-npm-cli?style=social)](https://github.com/chirag127/envpact-registry-publisher-npm-cli/stargazers)
+> Publish once, appear everywhere — programmatically submit an MCP server to every public MCP registry on every npm publish, so you never hand-fill six web forms again.
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](./LICENSE)
+[![Stars](https://img.shields.io/github/stars/chirag127/envpact-registry-publisher-npm-cli?style=social)](https://github.com/chirag127/envpact-registry-publisher-npm-cli/stargazers)
+[![Last commit](https://img.shields.io/github/last-commit/chirag127/envpact-registry-publisher-npm-cli)](https://github.com/chirag127/envpact-registry-publisher-npm-cli/commits)
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org)
+[![Node](https://img.shields.io/badge/Node-%3E%3D20-339933?logo=node.js&logoColor=white)](https://nodejs.org)
+[![Live docs](https://img.shields.io/badge/docs-live-blue)](https://envpact-registry-publisher-npm-cli.oriz.in)
 
 Programmatic submission of MCP servers to every public MCP registry —
 on every npm publish, automatically.
 
-**Live docs:** https://envpact-registry-publisher-npm-cli.oriz.in
+**Links:** [Repo](https://github.com/chirag127/envpact-registry-publisher-npm-cli) · [Live docs](https://envpact-registry-publisher-npm-cli.oriz.in) · [envpact umbrella](https://chirag127.github.io/envpact/)
 
 Replaces the manual `MCP_REGISTRY_SUBMISSION.md` checklist with a
 single CLI + GitHub Action that runs at the tail of `envpact-mcp`'s
 publish workflow (or anyone else's).
+
+⭐ **If this is useful, please [star the repo](https://github.com/chirag127/envpact-registry-publisher-npm-cli/stargazers)** — it helps other developers find it.
+
+## How it works
+
+```mermaid
+flowchart LR
+    pub[npm publish] --> cli[[envpact-registry-publisher<br/>CLI / GitHub Action]]
+    cli --> official[Official MCP Registry<br/>required]
+    cli --> smithery[Smithery]
+    cli --> glama[glama.ai]
+    cli --> mcpso[mcp.so]
+    cli --> awesome[awesome-mcp-servers PR]
+    server[server.json] --> cli
+```
 
 ## Why this exists
 
@@ -96,11 +116,59 @@ required registry error fails the run".
 | `awesome-mcp-servers` PR | `GH_PAT` | GitHub PAT, repo scope |
 | mcp.so Playwright | uses cached browser session | optional |
 
-Tokens are read at run-time only; never committed.
+Tokens are read at run-time only; never committed. **No secret values
+live in this repo.**
+
+## Tech stack
+
+- **TypeScript** (>=Node 20), ESM; compiled to `dist/`.
+- One adapter per registry under `src/registries/`.
+- **Playwright** (optional dependency) for UI-form fallbacks (Smithery / mcp.so).
+- Ships both an npm bin (`envpact-registry-publish`) and a composite GitHub Action (`action.yml`).
+
+## Repo structure
+
+```
+src/cli.ts            # CLI entrypoint (envpact-registry-publish bin)
+src/runner.ts         # runs adapters in priority order
+src/types.ts          # shared types
+src/registries/       # one adapter per registry:
+  official.ts         #   required: true (fails run on error)
+  smithery.ts         #   REST + Playwright fallback
+  glama.ts pulsemcp.ts#   passive
+  mcpso.ts            #   Playwright web form
+  awesome.ts          #   gh CLI pull request
+action.yml            # composite GitHub Action
+server.json.example   # sample descriptor
+```
+
+## Related projects — the envpact ecosystem
+
+| Repo | Role |
+| :--- | :--- |
+| [envpact](https://github.com/chirag127/envpact) | Core (Python) vault library |
+| [envpact-npm-cli](https://github.com/chirag127/envpact-npm-cli) | Zero-dependency Node CLI (`envpact-cli`) |
+| [envpact-mcp-server](https://github.com/chirag127/envpact-mcp-server) | MCP server for AI agents |
+| [envpact-gh-action](https://github.com/chirag127/envpact-gh-action) | GitHub Action — resolve secrets in CI |
+| **envpact-registry-publisher-npm-cli** | Publish MCP servers to every registry (this repo) |
+
+## Part of the oriz family
+
+One of ~80 [oriz](https://blog.oriz.in) projects — small, sharp,
+open-source tools. The live docs run **$0 on the Cloudflare free tier**.
+
+## Contributing
+
+PRs welcome. Conventional commits are the changelog.
+
+## Status
+
+**Beta.** Adapters are best-effort; the official registry adapter is
+required and fails the run loudly on error.
 
 ## License
 
-MIT.
+MIT © 2026 Chirag Singhal · chirag@oriz.in — see [LICENSE](./LICENSE).
 
 ## Documentation
 
